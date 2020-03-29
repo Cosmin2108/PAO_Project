@@ -64,6 +64,7 @@ public class Agenda {
             keys.add(key);
             System.out.println(i + ". " + key);
         }
+
         i+=1;
         if(show)
             System.out.println(i + ". " + "All");
@@ -72,6 +73,12 @@ public class Agenda {
         int option = Integer.parseInt(this.myScanner.nextLine()) - 1; // Because indexes start at 1
         if(option == i - 1) // Reason of -1 ^^^
             return "All";
+
+        if(keys.isEmpty())
+            return "Empty";
+
+        if(keys.size() < option)
+            return "Not found";
 
         String category = keys.get(option);
         return category;
@@ -182,6 +189,11 @@ public class Agenda {
         String category = this.showCategoriesOptions(false);
         System.out.println("----------------------------------------------------");
 
+        if (category.contains("Empty") || category.contains("Not found")){
+            System.out.println("No categories.");
+            return;
+        }
+
         Event event;
 
         // Extra information
@@ -235,6 +247,11 @@ public class Agenda {
         String category = this.showCategoriesOptions(true);
         System.out.println("----------------------------------------------------");
 
+        if (category.contains("Empty") || category.contains("Not found")){
+            System.out.println("No categories.");
+            return;
+        }
+
         if(category.equals("All")){
             for(Enumeration k = this.events_of_the_categories.keys(); k.hasMoreElements();){
                 String key = k.nextElement().toString();
@@ -242,13 +259,17 @@ public class Agenda {
             }
         }else{
             List<Event> categoriesEvents = this.events_of_the_categories.get(category);
-            int i=0;
-            for (Event categoriesEvent : categoriesEvents) System.out.println("Id: " + (++i) + "\n" + categoriesEvent.toString());
-            System.out.println("----------------------------------------------------");
-            System.out.print("Choose an event Id:");
+            if(!categoriesEvents.isEmpty()) {
+                int i = 0;
+                for (Event categoriesEvent : categoriesEvents)
+                    System.out.println("Id: " + (++i) + "\n" + categoriesEvent.toString());
+                System.out.println("----------------------------------------------------");
+                System.out.print("Choose an event Id:");
 
-            int element = Integer.parseInt(myScanner.nextLine()) - 1;
-            this.events_of_the_categories.get(category).remove(element);
+                int element = Integer.parseInt(myScanner.nextLine()) - 1;
+                this.events_of_the_categories.get(category).remove(element);
+            }else
+                System.out.println("List is empty.");
         }
     }
 
@@ -261,12 +282,15 @@ public class Agenda {
         this.events_of_the_categories.put(name,new ArrayList<>()); // there is no need to specify the argument for ArrayList
     }
 
-    public void DeleteCategory()
-    {
+    public void DeleteCategory() {
         System.out.println("----------------------------------------------------");
         System.out.println("Your categories. Choose one to delete.");
         String category = this.showCategoriesOptions(false);
 
+        if (category.contains("Empty") || category.contains("Not found")){
+            System.out.println("No categories.");
+            return;
+        }
         this.events_of_the_categories.remove(category);
     }
 
@@ -277,6 +301,11 @@ public class Agenda {
         System.out.println("Your categories. Choose one to view.");
         String category = this.showCategoriesOptions(true);
         System.out.println("----------------------------------------------------");
+
+        if (category.contains("Empty") || category.contains("Not found")){
+            System.out.println("No categories.");
+            return;
+        }
 
         if(category.equals("All")){
             for(Enumeration k = this.events_of_the_categories.keys(); k.hasMoreElements();){
