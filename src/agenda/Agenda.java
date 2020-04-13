@@ -1,6 +1,7 @@
 package agenda;
 
-import java.security.PublicKey;
+import filesServices.CategoriesFileService;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -11,6 +12,7 @@ public class Agenda {
 
     private Scanner myScanner;
     private String description;
+    private CategoriesFileService categoriesService;
     private Dictionary<String, List<Event>> events_of_the_categories;
 
     private Agenda()
@@ -18,14 +20,13 @@ public class Agenda {
         description = "~ Your Agenda! ~";
         events_of_the_categories = new Hashtable<>();
         myScanner = new Scanner(System.in);
+        categoriesService = CategoriesFileService.getInstance("src/categories.csv");
 
         //Default categories
-        events_of_the_categories.put("Birthday", new ArrayList<Event>()); // put an empty list, instead of None
-        events_of_the_categories.put("Concert", new ArrayList<Event>());
-        events_of_the_categories.put("Exam", new ArrayList<Event>());
-        events_of_the_categories.put("Trip", new ArrayList<Event>());
-        events_of_the_categories.put("Meeting", new ArrayList<Event>());
-        events_of_the_categories.put("Other", new ArrayList<Event>());
+        ArrayList<String> categoriesList = categoriesService.getCategoriesFromFile();
+        for(String categories:categoriesList){
+            events_of_the_categories.put(categories, new ArrayList<Event>()); // put an empty list, instead of None
+        }
     }
 
     private static void Run(){
@@ -57,7 +58,7 @@ public class Agenda {
     private String showCategoriesOptions(Boolean show){
 
         int i = 0;
-        List<String> keys = new ArrayList<String>(); // LIst of categories
+        List<String> keys = new ArrayList<String>(); // List of categories
         for(Enumeration k = this.events_of_the_categories.keys(); k.hasMoreElements();){
             i+=1;
             String key = k.nextElement().toString();
@@ -66,7 +67,7 @@ public class Agenda {
         }
 
         i+=1;
-        if(show)
+        if(show) // not delete for example
             System.out.println(i + ". " + "All");
         System.out.print("Choose an category: ");
 
@@ -77,7 +78,7 @@ public class Agenda {
         if(keys.isEmpty())
             return "Empty";
 
-        if(keys.size() < option)
+        if(keys.size() -1 < option)
             return "Not found";
 
         String category = keys.get(option);
@@ -96,9 +97,9 @@ public class Agenda {
             date = LocalDate.parse(inputDate, DateTimeFormatter.ofPattern("dd/MM/yyy"));
         } catch (Exception e){
             System.out.println("You input isn't valid. We set the date to current date");
-        } finally {
             date = LocalDate.now();
         }
+
         System.out.print("\nWhere: ");
         String where = this.myScanner.nextLine();
 
@@ -267,6 +268,10 @@ public class Agenda {
                 System.out.print("Choose an event Id:");
 
                 int element = Integer.parseInt(myScanner.nextLine()) - 1;
+                if(this.events_of_the_categories.size() - 1 < element) {
+                    System.out.println("Not exist.");
+                    return; // oops.
+                }
                 this.events_of_the_categories.get(category).remove(element);
             }else
                 System.out.println("List is empty.");
@@ -279,7 +284,8 @@ public class Agenda {
 
         System.out.print("Enter the name of the new category: ");
         String name = this.myScanner.nextLine();
-        this.events_of_the_categories.put(name,new ArrayList<>()); // there is no need to specify the argument for ArrayList
+        this.events_of_the_categories.put(name, new ArrayList<>()); // there is no need to specify the argument for ArrayList
+        categoriesService.addCategoriesToFile(name);
     }
 
     public void DeleteCategory() {
