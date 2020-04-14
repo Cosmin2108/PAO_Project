@@ -1,6 +1,6 @@
 package agenda;
 
-import filesServices.CategoriesFileService;
+import filesServices.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -13,6 +13,7 @@ public class Agenda {
     private Scanner myScanner;
     private String description;
     private CategoriesFileService categoriesService;
+    private ActionLogsService actionsLogService;
     private Dictionary<String, List<Event>> events_of_the_categories;
 
     private Agenda()
@@ -20,8 +21,8 @@ public class Agenda {
         description = "~ Your Agenda! ~";
         events_of_the_categories = new Hashtable<>();
         myScanner = new Scanner(System.in);
-        categoriesService = CategoriesFileService.getInstance("src/categories.csv");
-
+        categoriesService = CategoriesFileService.getInstance("src/categories.csv"); // like a DB :))
+        actionsLogService = ActionLogsService.getSingleInstance("src/logs.csv");
         //Default categories
         ArrayList<String> categoriesList = categoriesService.getCategoriesFromFile();
         for(String categories:categoriesList){
@@ -29,8 +30,11 @@ public class Agenda {
         }
     }
 
-    private static void Run(){
+    private void Run(){
         Boolean run = true;
+        ArrayList<String> log = new ArrayList<>();
+        log.add("Action: Run application Agenda");
+        actionsLogService.addLogToFile(log);
         while(run){
             switch (single_instance.ChooseAction()){
                 case 1: single_instance.AddEvent(); break;
@@ -50,7 +54,7 @@ public class Agenda {
     {
         if (single_instance == null) {
             single_instance = new Agenda();
-            Agenda.Run();
+            single_instance.Run();
         }
         return single_instance;
     }
@@ -119,6 +123,18 @@ public class Agenda {
         System.out.print("\nGift: ");
         String gift = this.myScanner.nextLine();
         event.setGift(gift);
+
+        ArrayList<String> log = new ArrayList<>();
+
+        log.add("Action: AddEvent");
+        log.add("Category: Birthday");
+        log.add("Whose: " + name);
+        log.add("Gift: " + gift);
+        log.add("When: " + event.getDate().toString());
+        log.add("Where: " + event.getWhere());
+        log.add("Time: " + event.getTime());
+        log.add("Event name: " + event.getName());
+        actionsLogService.addLogToFile(log);
     }
 
     private void AddConcertEventDetails(Concert event){
@@ -129,6 +145,18 @@ public class Agenda {
         System.out.print("\nEntry tax: ");
         String tax = this.myScanner.nextLine();
         event.setEntry(tax);
+
+        ArrayList<String> log = new ArrayList<>();
+
+        log.add("Action: AddEvent");
+        log.add("Category: Concert");
+        log.add("Singer: " + singer);
+        log.add("Tax: " + tax);
+        log.add("When: " + event.getDate().toString());
+        log.add("Where: " + event.getWhere());
+        log.add("Time: " + event.getTime());
+        log.add("Event name: " + event.getName());
+        actionsLogService.addLogToFile(log);
     }
 
     private void AddTripEventDetails(Trip event){
@@ -159,12 +187,43 @@ public class Agenda {
                 Attractions.add(name);
         }
         event.setTouristAttractions(Attractions);
+
+        ArrayList<String> log = new ArrayList<>();
+
+        log.add("Action: AddEvent");
+        log.add("Category: Trip");
+        log.add("Days: " + days);
+        log.add("Transport: " + priceTransport);
+        log.add("Hotel: " + priceHotel);
+        log.add("Extra budged" + priceHotel);
+
+        String attractions = "Attractions: ";
+        for(String attraction:Attractions){
+            attractions += attraction + ";";
+        }
+        log.add(attractions);
+        log.add("When: " + event.getDate().toString());
+        log.add("Where: " + event.getWhere());
+        log.add("Time: " + event.getTime());
+        log.add("Event name: " + event.getName());
+        actionsLogService.addLogToFile(log);
     }
 
     private void AddExamEventDetails(Exam event){
         System.out.print("\nSubject studied: ");
         String subject = this.myScanner.nextLine();
         event.setSubject(subject);
+
+        ArrayList<String> log = new ArrayList<>();
+
+        log.add("Action: AddEvent");
+        log.add("Category: Exam");
+        log.add("Subject studied: " + subject);
+        log.add("When: " + event.getDate().toString());
+        log.add("Where: " + event.getWhere());
+        log.add("Time: " + event.getTime());
+        log.add("Event name: " + event.getName());
+        actionsLogService.addLogToFile(log);
     }
 
     private void AddMeetingEventDetails(Meeting event){
@@ -175,12 +234,35 @@ public class Agenda {
         System.out.print("\nStatus(Ex: personal, business): ");
         String status = this.myScanner.nextLine();
         event.setStatus(status);
+
+        ArrayList<String> log = new ArrayList<>();
+
+        log.add("Action: AddEvent");
+        log.add("Category: Meeting");
+        log.add("Reason: " + reason);
+        log.add("Status: " + status);
+        log.add("When: " + event.getDate().toString());
+        log.add("Where: " + event.getWhere());
+        log.add("Time: " + event.getTime());
+        log.add("Event name: " + event.getName());
+        actionsLogService.addLogToFile(log);
     }
 
     private void AddOtherEventDetails(OtherEvent event){
         System.out.print("\nDescription: ");
         String desc = this.myScanner.nextLine();
         event.setDescription(desc);
+
+        ArrayList<String> log = new ArrayList<>();
+
+        log.add("Action: AddEvent");
+        log.add("Category: Other");
+        log.add("Description: " + desc);
+        log.add("When: " + event.getDate().toString());
+        log.add("Where: " + event.getWhere());
+        log.add("Time: " + event.getTime());
+        log.add("Event name: " + event.getName());
+        actionsLogService.addLogToFile(log);
     }
 
     public void AddEvent()
@@ -252,7 +334,7 @@ public class Agenda {
             System.out.println("No categories.");
             return;
         }
-
+        int element = 0;
         if(category.equals("All")){
             for(Enumeration k = this.events_of_the_categories.keys(); k.hasMoreElements();){
                 String key = k.nextElement().toString();
@@ -267,15 +349,24 @@ public class Agenda {
                 System.out.println("----------------------------------------------------");
                 System.out.print("Choose an event Id:");
 
-                int element = Integer.parseInt(myScanner.nextLine()) - 1;
+                element = Integer.parseInt(myScanner.nextLine()) - 1;
                 if(this.events_of_the_categories.size() - 1 < element) {
                     System.out.println("Not exist.");
-                    return; // oops.
+                    return;
                 }
                 this.events_of_the_categories.get(category).remove(element);
             }else
                 System.out.println("List is empty.");
         }
+
+        ArrayList<String> log = new ArrayList<>();
+        log.add("Action: DeleteEvent");
+        log.add("Category: " + category);
+        if(category.equals("All"))
+            log.add("Event name: All");
+        else
+            log.add("Event name: " + this.events_of_the_categories.get(category).get(element).getName());
+        actionsLogService.addLogToFile(log);
     }
 
     public void AddCategory()
@@ -286,6 +377,11 @@ public class Agenda {
         String name = this.myScanner.nextLine();
         this.events_of_the_categories.put(name, new ArrayList<>()); // there is no need to specify the argument for ArrayList
         categoriesService.addCategoriesToFile(name);
+
+        ArrayList<String> log = new ArrayList<>();
+        log.add("Action: AddCategory");
+        log.add("Category:" + name);
+        actionsLogService.addLogToFile(log);
     }
 
     public void DeleteCategory() {
@@ -298,6 +394,11 @@ public class Agenda {
             return;
         }
         this.events_of_the_categories.remove(category);
+
+        ArrayList<String> log = new ArrayList<>();
+        log.add("Action: DeleteCategory");
+        log.add("Category:" + category);
+        actionsLogService.addLogToFile(log);
     }
 
 
@@ -328,6 +429,11 @@ public class Agenda {
             List<Event> categoriesEvents = this.events_of_the_categories.get(category);
             for (Event categoriesEvent : categoriesEvents) System.out.println(categoriesEvent.toString());
         }
+
+        ArrayList<String> log = new ArrayList<>();
+        log.add("Action: ShowEvents");
+        log.add("Category:" + category);
+        actionsLogService.addLogToFile(log);
     }
 
     public int ChooseAction(){

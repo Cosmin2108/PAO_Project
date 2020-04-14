@@ -38,7 +38,6 @@ public class CategoriesFileService {
             String data = myScanner.nextLine();
             List<String> c = new ArrayList<String>(Arrays.asList(data.split(", ")));
             categories.addAll(c);
-            System.out.println(data);
         }
         return categories;
     }

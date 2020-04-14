@@ -27,6 +27,22 @@ public abstract class Event {
         this.Time = time;
     }
 
+    public LocalDate getDate() {
+        return Date;
+    }
+
+    public String getName() {
+        return Name;
+    }
+
+    public String getTime() {
+        return Time;
+    }
+
+    public String getWhere() {
+        return Where;
+    }
+
     @Override
     public String toString() {
         return "Event details: " + this.Name + "\nDate: " + this.Date + "\nLocation: " + this.Where + "\nWhen: " + this.Time;
