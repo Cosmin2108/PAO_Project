@@ -2,31 +2,41 @@ package agenda;
 import java.util.*;
 
 public class Trip extends Event {
-    private int NumberOfDays;
-    private double TransportPrice;
-    private double HotelPrice;
+    private String NumberOfDays;
+    private String TransportPrice;
+    private String HotelPrice;
     private List<String> TouristAttractions;
-    private double ExtraBudget;
+    private String ExtraBudget;
 
     public Trip(){}
+
+    public Trip(ArrayList<String> event){
+        super(Arrays.asList(event.get(0), event.get(1), event.get(2), event.get(3)));
+        setNumberOfDays(event.get(4));
+        setTransportPrice(event.get(5));
+        setHotelPrice(event.get(6));
+        ArrayList<String> attractions = new ArrayList<String>(Arrays.asList(event.get(7).split(";")));
+        setTouristAttractions(attractions);
+        setExtraBudget(event.get(8));
+    }
 
     public void setTouristAttractions(List<String> touristAttractions) {
         TouristAttractions = touristAttractions;
     }
 
-    public void setNumberOfDays(int numberOfDays) {
+    public void setNumberOfDays(String numberOfDays) {
         NumberOfDays = numberOfDays;
     }
 
-    public void setTransportPrice(double transportPrice) {
+    public void setTransportPrice(String transportPrice) {
         TransportPrice = transportPrice;
     }
 
-    public void setHotelPrice(double hotelPrice) {
+    public void setHotelPrice(String hotelPrice) {
         HotelPrice = hotelPrice;
     }
 
-    public void setExtraBudget(double extraBudget) {
+    public void setExtraBudget(String extraBudget) {
         ExtraBudget = extraBudget;
     }
 

@@ -1,6 +1,8 @@
 package agenda;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Event {
 
@@ -10,6 +12,13 @@ public abstract class Event {
     private String Time;
 
     public Event(){ }
+
+    public Event(List<String> event){
+        setName(event.get(0));
+        setDate(LocalDate.parse(event.get(1)));
+        setWhere(event.get(2));
+        setTime(event.get(3));
+    }
 
     public void setName(String name){
         this.Name = name;
@@ -45,6 +54,6 @@ public abstract class Event {
 
     @Override
     public String toString() {
-        return "Event details: " + this.Name + "\nDate: " + this.Date + "\nLocation: " + this.Where + "\nWhen: " + this.Time;
+        return "Event name: " + this.Name + "\nDate: " + this.Date + "\nLocation: " + this.Where + "\nWhen: " + this.Time;
     }
 }

@@ -11,23 +11,36 @@ public class Agenda {
     private static Agenda single_instance = null;
 
     private Scanner myScanner;
-    private String description;
     private CategoriesFileService categoriesService;
     private ActionLogsService actionsLogService;
+    private TripEventFileService tripEventService;
+    private BirthdayEventFileService birthdayEventService;
+
     private Dictionary<String, List<Event>> events_of_the_categories;
 
     private Agenda()
     {
-        description = "~ Your Agenda! ~";
         events_of_the_categories = new Hashtable<>();
+
         myScanner = new Scanner(System.in);
+
         categoriesService = CategoriesFileService.getInstance("src/categories.csv"); // like a DB :))
         actionsLogService = ActionLogsService.getSingleInstance("src/logs.csv");
-        //Default categories
+        tripEventService = TripEventFileService.getInstance("src/trips.csv");
+        birthdayEventService = BirthdayEventFileService.getInstance("src/birthdays.csv");
+
+        // categories
         ArrayList<String> categoriesList = categoriesService.getCategoriesFromFile();
         for(String categories:categoriesList){
             events_of_the_categories.put(categories, new ArrayList<Event>()); // put an empty list, instead of None
         }
+        // events
+        ArrayList<ArrayList<String>> trips = tripEventService.getTripEventFromFile();
+        for(ArrayList<String> trip:trips){
+            Event t = new Trip(trip);
+            events_of_the_categories.get("Trip").add(t);
+        }
+
     }
 
     private void Run(){
@@ -130,10 +143,10 @@ public class Agenda {
         log.add("Category: Birthday");
         log.add("Whose: " + name);
         log.add("Gift: " + gift);
+        log.add("Event name: " + event.getName());
         log.add("When: " + event.getDate().toString());
         log.add("Where: " + event.getWhere());
         log.add("Time: " + event.getTime());
-        log.add("Event name: " + event.getName());
         actionsLogService.addLogToFile(log);
     }
 
@@ -162,19 +175,19 @@ public class Agenda {
     private void AddTripEventDetails(Trip event){
         System.out.print("\nDays: ");
         int days = Integer.parseInt(this.myScanner.nextLine());
-        event.setNumberOfDays(days);
+        event.setNumberOfDays(Integer.toString(days));
 
         System.out.print("\nTransport price: ");
         double priceTransport = Double.parseDouble(this.myScanner.nextLine());
-        event.setTransportPrice(priceTransport);
+        event.setTransportPrice(Double.toString(priceTransport));
 
         System.out.print("\nHotel price: ");
         double priceHotel = Double.parseDouble(this.myScanner.nextLine());
-        event.setHotelPrice(priceHotel);
+        event.setHotelPrice(Double.toString(priceHotel));
 
         System.out.print("\nExtra budget: ");
         double extraBudget = Double.parseDouble(this.myScanner.nextLine());
-        event.setExtraBudget(extraBudget);
+        event.setExtraBudget(Double.toString(extraBudget));
 
         System.out.print("\nTourist attractions (Enter names or 'x' to finish): ");
 
@@ -188,6 +201,7 @@ public class Agenda {
         }
         event.setTouristAttractions(Attractions);
 
+        // Log
         ArrayList<String> log = new ArrayList<>();
 
         log.add("Action: AddEvent");
@@ -197,16 +211,28 @@ public class Agenda {
         log.add("Hotel: " + priceHotel);
         log.add("Extra budged" + priceHotel);
 
-        String attractions = "Attractions: ";
-        for(String attraction:Attractions){
-            attractions += attraction + ";";
-        }
-        log.add(attractions);
+        String attractions = String.join(";", Attractions);
+
+        log.add("Attractions: " + attractions);
         log.add("When: " + event.getDate().toString());
         log.add("Where: " + event.getWhere());
         log.add("Time: " + event.getTime());
         log.add("Event name: " + event.getName());
         actionsLogService.addLogToFile(log);
+
+        // Save data to file
+
+        ArrayList<String> tripEvent = new ArrayList<>();
+        tripEvent.add(event.getName());
+        tripEvent.add(event.getDate().toString());
+        tripEvent.add(event.getWhere());
+        tripEvent.add(event.getTime());
+        tripEvent.add(Integer.toString(days));
+        tripEvent.add(Double.toString(priceTransport));
+        tripEvent.add(Double.toString(priceHotel));
+        tripEvent.add(attractions);
+        tripEvent.add(Double.toString(extraBudget));
+        tripEventService.addTripEventToFile(tripEvent);
     }
 
     private void AddExamEventDetails(Exam event){
