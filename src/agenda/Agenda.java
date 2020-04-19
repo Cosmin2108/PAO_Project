@@ -34,11 +34,18 @@ public class Agenda {
         for(String categories:categoriesList){
             events_of_the_categories.put(categories, new ArrayList<Event>()); // put an empty list, instead of None
         }
-        // events
+        // trip event
         ArrayList<ArrayList<String>> trips = tripEventService.getTripEventFromFile();
         for(ArrayList<String> trip:trips){
             Event t = new Trip(trip);
             events_of_the_categories.get("Trip").add(t);
+        }
+
+        // birthday event
+        ArrayList<ArrayList<String>> birthdays = birthdayEventService.getBirthdayEventFromFile();
+        for(ArrayList<String> birthday:birthdays){
+            Event t = new Birthday(birthday);
+            events_of_the_categories.get("Birthday").add(t);
         }
 
     }
@@ -137,6 +144,7 @@ public class Agenda {
         String gift = this.myScanner.nextLine();
         event.setGift(gift);
 
+        // log
         ArrayList<String> log = new ArrayList<>();
 
         log.add("Action: AddEvent");
@@ -148,6 +156,16 @@ public class Agenda {
         log.add("Where: " + event.getWhere());
         log.add("Time: " + event.getTime());
         actionsLogService.addLogToFile(log);
+
+        // add to file
+        ArrayList<String> birthdayEvent = new ArrayList<>();
+        birthdayEvent.add(event.getName());
+        birthdayEvent.add(event.getDate().toString());
+        birthdayEvent.add(event.getWhere());
+        birthdayEvent.add(event.getTime());
+        birthdayEvent.add(name);
+        birthdayEvent.add(gift);
+        birthdayEventService.addBirthdayEventToFile(birthdayEvent);
     }
 
     private void AddConcertEventDetails(Concert event){
@@ -458,7 +476,7 @@ public class Agenda {
 
         ArrayList<String> log = new ArrayList<>();
         log.add("Action: ShowEvents");
-        log.add("Category:" + category);
+        log.add("Category: " + category);
         actionsLogService.addLogToFile(log);
     }
 
