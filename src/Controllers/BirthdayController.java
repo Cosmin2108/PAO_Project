@@ -18,8 +18,8 @@ public class BirthdayController {
         return birthdays;
     }
 
-    public void addBirthday(){
-
+    public void addBirthday(Birthday event) throws SQLException {
+        context.addBirthday(event);
     }
 
     public void deleteBirthday(){

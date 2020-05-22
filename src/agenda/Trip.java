@@ -21,6 +21,30 @@ public class Trip extends Event {
         setExtraBudget(event.get(8));
     }
 
+    public String getNumberOfDays() {
+        return NumberOfDays;
+    }
+
+    public String getTransportPrice() {
+        return TransportPrice;
+    }
+
+    public int getId() {
+        return Id;
+    }
+
+    public String getHotelPrice() {
+        return HotelPrice;
+    }
+
+    public List<String> getTouristAttractions() {
+        return TouristAttractions;
+    }
+
+    public String getExtraBudget() {
+        return ExtraBudget;
+    }
+
     public void setId(int id) {
         Id = id;
     }

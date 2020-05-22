@@ -15,6 +15,18 @@ public class Birthday extends Event {
         setGift(event.get(5));
     }
 
+    public String getWhose() {
+        return Whose;
+    }
+
+    public String getGift() {
+        return Gift;
+    }
+
+    public int getId() {
+        return Id;
+    }
+
     public void setId(int id) {
         this.Id = id;
     }

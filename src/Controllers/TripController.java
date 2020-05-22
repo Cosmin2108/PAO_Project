@@ -19,8 +19,8 @@ public class TripController {
         return trips;
     }
 
-    public void addTrip(){
-
+    public void addTrip(Trip event){
+        context.addTrip(event);
     }
 
     public void deleteTrip(){

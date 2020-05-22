@@ -79,7 +79,7 @@ public class Agenda {
         }
     }
 
-    private void Run(){
+    private void Run() throws SQLException {
         Boolean run = true;
         ArrayList<String> log = new ArrayList<>();
         log.add("Action: Run application Agenda");
@@ -338,8 +338,7 @@ public class Agenda {
         actionsLogService.addLogToFile(log);
     }
 
-    public void AddEvent()
-    {
+    public void AddEvent() throws SQLException {
         System.out.println("----------------------------------------------------");
         System.out.println("Available categories:");
         String category = this.showCategoriesOptions(false);
@@ -392,6 +391,12 @@ public class Agenda {
         String answer = myScanner.nextLine();
         if(answer.contains("Yes")) {
             this.events_of_the_categories.get(category).add(event);         // add event to the chosen category
+            if(category.equals("Birthday")){
+                birthdayController.addBirthday((Birthday) event);
+            }
+            else{
+                tripController.addTrip((Trip) event);
+            }
             System.out.println("Action performed.");
         }else
             System.out.println("Event wasn't added.");

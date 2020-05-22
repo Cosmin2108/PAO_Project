@@ -10,7 +10,7 @@ public abstract class Event {
     private LocalDate Date;
     private String Where;
     private String Time;
-
+    private int eventId;
     public Event(){ }
 
     public Event(List<String> event){
@@ -19,6 +19,8 @@ public abstract class Event {
         setWhere(event.get(2));
         setTime(event.get(3));
     }
+
+    public void setEventId(int eventId) { this.eventId = eventId; }
 
     public void setName(String name){
         this.Name = name;
@@ -51,6 +53,8 @@ public abstract class Event {
     public String getWhere() {
         return Where;
     }
+
+    public int getEventId() { return eventId; }
 
     @Override
     public String toString() {

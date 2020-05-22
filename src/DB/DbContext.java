@@ -5,6 +5,7 @@ import agenda.Trip;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -13,7 +14,7 @@ public class DbContext {
     // protocol = jdbc
     // vendor = mysql
     // adresa pt conexiune la baza de date si numele schemei
-    private String url = "jdbc:mysql://localhost:3306/laboratorpao";
+    private String url = "jdbc:mysql://localhost:3306/laboratorpao?useLegacyDatetimeCode=false&serverTimezone=UTC";
     private String username = "root";
     private String password = "";
     private static Connection connection;
@@ -40,9 +41,10 @@ public class DbContext {
             Birthday event = new Birthday();
             // event class
             event.setName(result.getString("name"));
-            event.setDate(LocalDate.parse(result.getString("date")));
+            event.setDate(LocalDate.parse(result.getString("date"),DateTimeFormatter.ofPattern("dd/MM/yyy")));
             event.setWhere(result.getString("where"));
             event.setTime(result.getString("time"));
+            event.setEventId(result.getInt("eventId"));
             //birthday class
             event.setId(result.getInt("id"));
             event.setGift(result.getString("gift"));
@@ -54,8 +56,12 @@ public class DbContext {
         return birthdays;
     }
 
-    public void addBirthday(Birthday event){
-
+    public void addBirthday(Birthday event) throws SQLException {
+        ArrayList<Birthday> birthdays = new ArrayList<>();
+        String query = "INSERT INTO birthdays VALUE(null, ' " + event.getWhose() + "', '" + event.getGift() + "')";
+        statement.executeUpdate(query);
+        query = "INSERT INTO events_ VALUE(null, LAST_INSERT_ID(), null, '" + event.getName() + "', '" + event.getDate().format(DateTimeFormatter.ofPattern("dd/MM/yyy")) + "', '"+ event.getWhere() + "', '"+ event.getTime() + "')";
+        statement.executeUpdate(query);
     }
 
     public void deleteBirthday(int Id){
@@ -71,9 +77,10 @@ public class DbContext {
             Trip event = new Trip();
             // event class
             event.setName(result.getString("name"));
-            event.setDate(LocalDate.parse(result.getString("date")));
+            event.setDate(LocalDate.parse(result.getString("date"), DateTimeFormatter.ofPattern("dd/MM/yyy")));
             event.setWhere(result.getString("where"));
             event.setTime(result.getString("time"));
+            event.setEventId(result.getInt("eventId"));
             //birthday class
             event.setId(result.getInt("id"));
             event.setTransportPrice(result.getString("transportPrice"));
@@ -89,8 +96,12 @@ public class DbContext {
         return trips;
     }
 
-    public void addTrip(Trip event){
-
+    public void addTrip(Trip event) throws SQLException {
+        ArrayList<Birthday> birthdays = new ArrayList<>();
+        String query = "INSERT INTO trips VALUE(null, ' " + event.getNumberOfDays() + "', '" + event.getTransportPrice() + "', '" + event.getHotelPrice() + "', '" + String.join(", ", event.getTouristAttractions()) + "', '" + event.getExtraBudget() + "')";
+        statement.executeUpdate(query);
+        query = "INSERT INTO events_ VALUE(null, null, LAST_INSERT_ID(), '" + event.getName() + "', '" + event.getDate().format(DateTimeFormatter.ofPattern("dd/MM/yyy")) + "', '"+ event.getWhere() + "', '"+ event.getTime() + "')";
+        statement.executeUpdate(query);
     }
 
     public void deleteTrip(int Id){
