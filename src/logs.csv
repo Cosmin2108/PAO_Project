@@ -1,3 +1,16 @@
 Logged at: 11:57:30, Action: Run application Agenda
 Logged at: 11:57:35, Action: ShowEvents, Category: Concert
 Logged at: 11:57:46, Action: ShowEvents, Category: All
+Logged at: 17:45:26, Action: Run application Agenda
+Logged at: 17:45:41, Action: ShowEvents, Category: All
+Logged at: 17:46:27, Action: AddCategory, Category:Test
+Logged at: 17:48:13, Action: Run application Agenda
+Logged at: 17:48:32, Action: AddCategory, Category:Test
+Logged at: 17:48:47, Action: ShowEvents, Category: All
+Logged at: 17:50:16, Action: AddEvent, Category: Trip, Days: 5, Transport: 200.0, Hotel: 1000.0, Extra budged1000.0, Attractions: una;doua, When: 2020-07-22, Where: Bucegi, Time: 12:00, Event name: Excursie la munte
+Logged at: 17:50:50, Action: ShowEvents, Category: All
+Logged at: 17:51:07, Action: ShowEvents, Category: Trip
+Logged at: 17:52:22, Action: AddEvent, Category: Birthday, Whose: A mea, Gift: Un Harley :))), Event name: ZIua de nastere, When: 2020-04-19, Where: Acasa, Time: 12:00
+Logged at: 17:52:33, Action: ShowEvents, Category: All
+Logged at: 17:53:13, Action: Run application Agenda
+Logged at: 17:53:19, Action: ShowEvents, Category: All

@@ -7,6 +7,7 @@ public class Trip extends Event {
     private String HotelPrice;
     private List<String> TouristAttractions;
     private String ExtraBudget;
+    private int Id;
 
     public Trip(){}
 
@@ -18,6 +19,10 @@ public class Trip extends Event {
         ArrayList<String> attractions = new ArrayList<String>(Arrays.asList(event.get(7).split(";")));
         setTouristAttractions(attractions);
         setExtraBudget(event.get(8));
+    }
+
+    public void setId(int id) {
+        Id = id;
     }
 
     public void setTouristAttractions(List<String> touristAttractions) {

@@ -1,7 +1,11 @@
 package agenda;
 
+import Controllers.BirthdayController;
+import Controllers.CategoriesController;
+import Controllers.TripController;
 import filesServices.*;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -11,43 +15,68 @@ public class Agenda {
     private static Agenda single_instance = null;
 
     private Scanner myScanner;
+    // using csv files as DB
     private CategoriesFileService categoriesService;
     private ActionLogsService actionsLogService;
     private TripEventFileService tripEventService;
     private BirthdayEventFileService birthdayEventService;
 
+    // using MySQL as DB
+    private BirthdayController birthdayController;
+    private TripController tripController;
+    private CategoriesController categoriesController;
+
     private Dictionary<String, List<Event>> events_of_the_categories;
 
-    private Agenda()
-    {
+    private Agenda() throws SQLException {
         events_of_the_categories = new Hashtable<>();
 
         myScanner = new Scanner(System.in);
-
+        // CSV
         categoriesService = CategoriesFileService.getInstance("src/categories.csv"); // like a DB :))
         actionsLogService = ActionLogsService.getSingleInstance("src/logs.csv");
         tripEventService = TripEventFileService.getInstance("src/trips.csv");
         birthdayEventService = BirthdayEventFileService.getInstance("src/birthdays.csv");
+        /// BD
+        birthdayController = new BirthdayController();
+        categoriesController = new CategoriesController();
+        tripController = new TripController();
+
+//        // categories
+//        ArrayList<String> categoriesList = categoriesService.getCategoriesFromFile();
+//        for(String categories:categoriesList){
+//            events_of_the_categories.put(categories, new ArrayList<Event>()); // put an empty list, instead of None
+//        }
+//        // trip event
+//        ArrayList<ArrayList<String>> trips = tripEventService.getTripEventFromFile();
+//        for(ArrayList<String> trip:trips){
+//            Event t = new Trip(trip);
+//            events_of_the_categories.get("Trip").add(t);
+//        }
+//
+//        // birthday event
+//        ArrayList<ArrayList<String>> birthdays = birthdayEventService.getBirthdayEventFromFile();
+//        for(ArrayList<String> birthday:birthdays){
+//            Event t = new Birthday(birthday);
+//            events_of_the_categories.get("Birthday").add(t);
+//        }
 
         // categories
-        ArrayList<String> categoriesList = categoriesService.getCategoriesFromFile();
+        ArrayList<String> categoriesList = categoriesController.getCategories();
         for(String categories:categoriesList){
             events_of_the_categories.put(categories, new ArrayList<Event>()); // put an empty list, instead of None
         }
         // trip event
-        ArrayList<ArrayList<String>> trips = tripEventService.getTripEventFromFile();
-        for(ArrayList<String> trip:trips){
-            Event t = new Trip(trip);
-            events_of_the_categories.get("Trip").add(t);
+        ArrayList<Trip> trips = tripController.getTrips();
+        for(Trip trip:trips){
+            events_of_the_categories.get("Trip").add(trip);
         }
 
         // birthday event
-        ArrayList<ArrayList<String>> birthdays = birthdayEventService.getBirthdayEventFromFile();
-        for(ArrayList<String> birthday:birthdays){
-            Event t = new Birthday(birthday);
-            events_of_the_categories.get("Birthday").add(t);
+        ArrayList<Birthday> birthdays = birthdayController.getBirthdays();
+        for(Birthday birthday:birthdays){
+            events_of_the_categories.get("Birthday").add(birthday);
         }
-
     }
 
     private void Run(){
@@ -70,8 +99,7 @@ public class Agenda {
     }
 
     // static method to create instance of Singleton class
-    public static Agenda getInstance()
-    {
+    public static Agenda getInstance() throws SQLException {
         if (single_instance == null) {
             single_instance = new Agenda();
             single_instance.Run();
@@ -155,6 +183,7 @@ public class Agenda {
         log.add("When: " + event.getDate().toString());
         log.add("Where: " + event.getWhere());
         log.add("Time: " + event.getTime());
+
         actionsLogService.addLogToFile(log);
 
         // add to file
@@ -317,7 +346,7 @@ public class Agenda {
         System.out.println("----------------------------------------------------");
 
         if (category.contains("Empty") || category.contains("Not found")){
-            System.out.println("No categories.");
+            System.out.println("Invalid categorie.");
             return;
         }
 
@@ -325,7 +354,7 @@ public class Agenda {
 
         // Extra information
         if(category.equals("Exam")) {
-            event = new Exam();                     // daca il initializez in functie devine local si trebuie sa ii dau return
+            event = new Exam();                     // daca il declar in if devine local
             AddEventDetails(event);
             AddExamEventDetails((Exam) event);
         }

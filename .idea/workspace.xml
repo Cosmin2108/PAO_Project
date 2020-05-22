@@ -2,17 +2,25 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="53eb77cf-361d-4516-848a-acd1ed8f6623" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/birthdays.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/filesServices/TripEventFileService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/trips.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controllers/BirthdayController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controllers/CategoriesController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controllers/TripController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/DB/DbContext.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Proiect_PAO/agenda/Agenda.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Proiect_PAO/agenda/Agenda.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Proiect_PAO/agenda/Event.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Proiect_PAO/agenda/Event.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Proiect_PAO/agenda/Birthday.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Proiect_PAO/agenda/Birthday.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Proiect_PAO/birthdays.csv" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Proiect_PAO/birthdays.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Proiect_PAO/categories.csv" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Proiect_PAO/categories.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Proiect_PAO/logs.csv" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Proiect_PAO/logs.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Proiect_PAO/trips.csv" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Proiect_PAO/trips.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/agenda/Agenda.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/agenda/Agenda.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/agenda/Event.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/agenda/Event.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/agenda/Aplicatie.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/agenda/Aplicatie.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/agenda/Birthday.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/agenda/Birthday.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/agenda/Trip.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/agenda/Trip.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/filesServices/EventFileService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/filesServices/BirthdayEventFileService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/birthdays.csv" beforeDir="false" afterPath="$PROJECT_DIR$/src/birthdays.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/categories.csv" beforeDir="false" afterPath="$PROJECT_DIR$/src/categories.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/logs.csv" beforeDir="false" afterPath="$PROJECT_DIR$/src/logs.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/trips.csv" beforeDir="false" afterPath="$PROJECT_DIR$/src/trips.csv" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,6 +50,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_package_manager_path" value="npm" />
   </component>
   <component name="RunManager">
     <configuration name="Aplicatie" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
@@ -80,7 +89,11 @@
       <workItem from="1585840895078" duration="1076000" />
       <workItem from="1586773574871" duration="9920000" />
       <workItem from="1586869449800" duration="8882000" />
-      <workItem from="1586948418729" duration="6922000" />
+      <workItem from="1586948418729" duration="7529000" />
+      <workItem from="1587285198799" duration="1476000" />
+      <workItem from="1587307285529" duration="1178000" />
+      <workItem from="1589901904680" duration="42000" />
+      <workItem from="1590137989715" duration="14784000" />
     </task>
     <servers />
   </component>
@@ -96,26 +109,30 @@
       <screen x="0" y="0" width="1366" height="732" />
     </state>
     <state x="442" y="244" width="473" height="240" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/0.0.1366.732@0.0.1366.732" timestamp="1585237362868" />
-    <state width="1320" height="174" key="GridCell.Tab.0.bottom" timestamp="1586957700389">
+    <state width="1320" height="174" key="GridCell.Tab.0.bottom" timestamp="1587308468913">
       <screen x="0" y="0" width="1366" height="732" />
     </state>
-    <state width="1320" height="174" key="GridCell.Tab.0.bottom/0.0.1366.732@0.0.1366.732" timestamp="1586957700389" />
-    <state width="1320" height="174" key="GridCell.Tab.0.center" timestamp="1586957700388">
+    <state width="1320" height="174" key="GridCell.Tab.0.bottom/0.0.1366.732@0.0.1366.732" timestamp="1587308468913" />
+    <state width="1320" height="174" key="GridCell.Tab.0.center" timestamp="1587308468912">
       <screen x="0" y="0" width="1366" height="732" />
     </state>
-    <state width="1320" height="174" key="GridCell.Tab.0.center/0.0.1366.732@0.0.1366.732" timestamp="1586957700388" />
-    <state width="1320" height="174" key="GridCell.Tab.0.left" timestamp="1586957700387">
+    <state width="1320" height="174" key="GridCell.Tab.0.center/0.0.1366.732@0.0.1366.732" timestamp="1587308468912" />
+    <state width="1320" height="174" key="GridCell.Tab.0.left" timestamp="1587308468912">
       <screen x="0" y="0" width="1366" height="732" />
     </state>
-    <state width="1320" height="174" key="GridCell.Tab.0.left/0.0.1366.732@0.0.1366.732" timestamp="1586957700387" />
-    <state width="1320" height="174" key="GridCell.Tab.0.right" timestamp="1586957700388">
+    <state width="1320" height="174" key="GridCell.Tab.0.left/0.0.1366.732@0.0.1366.732" timestamp="1587308468912" />
+    <state width="1320" height="174" key="GridCell.Tab.0.right" timestamp="1587308468913">
       <screen x="0" y="0" width="1366" height="732" />
     </state>
-    <state width="1320" height="174" key="GridCell.Tab.0.right/0.0.1366.732@0.0.1366.732" timestamp="1586957700388" />
+    <state width="1320" height="174" key="GridCell.Tab.0.right/0.0.1366.732@0.0.1366.732" timestamp="1587308468913" />
     <state x="376" y="194" key="com.intellij.ide.util.TipDialog" timestamp="1585840898517">
       <screen x="0" y="0" width="1366" height="732" />
     </state>
     <state x="376" y="194" key="com.intellij.ide.util.TipDialog/0.0.1366.732@0.0.1366.732" timestamp="1585840898517" />
+    <state x="297" y="0" width="764" height="727" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1590144996798">
+      <screen x="0" y="0" width="1366" height="732" />
+    </state>
+    <state x="297" y="0" width="764" height="727" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.1366.732@0.0.1366.732" timestamp="1590144996798" />
     <state x="130" y="24" width="1096" height="691" key="dock-window-1" timestamp="1586779961185">
       <screen x="0" y="0" width="1366" height="732" />
     </state>
@@ -124,10 +141,14 @@
       <screen x="0" y="0" width="1366" height="732" />
     </state>
     <state x="616" y="101" width="526" height="470" key="extract.method.dialog/0.0.1366.732@0.0.1366.732" timestamp="1586953689761" />
-    <state x="346" y="161" key="run.anything.popup" timestamp="1585478968765">
+    <state x="58" y="0" width="1241" height="727" key="new project wizard" timestamp="1589901963455">
       <screen x="0" y="0" width="1366" height="732" />
     </state>
-    <state x="346" y="161" key="run.anything.popup/0.0.1366.732@0.0.1366.732" timestamp="1585478968765" />
+    <state x="58" y="0" width="1241" height="727" key="new project wizard/0.0.1366.732@0.0.1366.732" timestamp="1589901963455" />
+    <state x="346" y="161" key="run.anything.popup" timestamp="1590151631146">
+      <screen x="0" y="0" width="1366" height="732" />
+    </state>
+    <state x="346" y="161" key="run.anything.popup/0.0.1366.732@0.0.1366.732" timestamp="1590151631146" />
     <state x="517" y="44" width="672" height="678" key="search.everywhere.popup" timestamp="1585410326092">
       <screen x="0" y="0" width="1366" height="732" />
     </state>
