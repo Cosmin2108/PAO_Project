@@ -17,12 +17,12 @@ public class CategoriesController {
         return categories;
     }
 
-    public void addCategory(){
-
+    public void addCategory(String name) throws SQLException {
+        context.addCategories(name);
     }
 
-    public void deleteCategory(){
-
+    public void deleteCategory(String name) throws SQLException {
+        context.deleteCategory(name);
     }
 
     public void editCategory(){

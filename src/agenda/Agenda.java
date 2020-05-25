@@ -1,5 +1,6 @@
 package agenda;
 
+import Controllers.ActionsLogController;
 import Controllers.BirthdayController;
 import Controllers.CategoriesController;
 import Controllers.TripController;
@@ -25,7 +26,7 @@ public class Agenda {
     private BirthdayController birthdayController;
     private TripController tripController;
     private CategoriesController categoriesController;
-
+    private ActionsLogController logController;
     private Dictionary<String, List<Event>> events_of_the_categories;
 
     private Agenda() throws SQLException {
@@ -41,6 +42,7 @@ public class Agenda {
         birthdayController = new BirthdayController();
         categoriesController = new CategoriesController();
         tripController = new TripController();
+        logController = new ActionsLogController();
 
 //        // categories
 //        ArrayList<String> categoriesList = categoriesService.getCategoriesFromFile();
@@ -84,6 +86,7 @@ public class Agenda {
         ArrayList<String> log = new ArrayList<>();
         log.add("Action: Run application Agenda");
         actionsLogService.addLogToFile(log);
+        logController.addLog(log);
         while(run){
             switch (single_instance.ChooseAction()){
                 case 1: single_instance.AddEvent(); break;
@@ -185,6 +188,7 @@ public class Agenda {
         log.add("Time: " + event.getTime());
 
         actionsLogService.addLogToFile(log);
+        logController.addLog(log);
 
         // add to file
         ArrayList<String> birthdayEvent = new ArrayList<>();
@@ -217,6 +221,7 @@ public class Agenda {
         log.add("Time: " + event.getTime());
         log.add("Event name: " + event.getName());
         actionsLogService.addLogToFile(log);
+        logController.addLog(log);
     }
 
     private void AddTripEventDetails(Trip event){
@@ -266,7 +271,7 @@ public class Agenda {
         log.add("Time: " + event.getTime());
         log.add("Event name: " + event.getName());
         actionsLogService.addLogToFile(log);
-
+        logController.addLog(log);
         // Save data to file
 
         ArrayList<String> tripEvent = new ArrayList<>();
@@ -297,6 +302,7 @@ public class Agenda {
         log.add("Time: " + event.getTime());
         log.add("Event name: " + event.getName());
         actionsLogService.addLogToFile(log);
+        logController.addLog(log);
     }
 
     private void AddMeetingEventDetails(Meeting event){
@@ -319,6 +325,7 @@ public class Agenda {
         log.add("Time: " + event.getTime());
         log.add("Event name: " + event.getName());
         actionsLogService.addLogToFile(log);
+        logController.addLog(log);
     }
 
     private void AddOtherEventDetails(OtherEvent event){
@@ -336,6 +343,7 @@ public class Agenda {
         log.add("Time: " + event.getTime());
         log.add("Event name: " + event.getName());
         actionsLogService.addLogToFile(log);
+        logController.addLog(log);
     }
 
     public void AddEvent() throws SQLException {
@@ -353,7 +361,7 @@ public class Agenda {
 
         // Extra information
         if(category.equals("Exam")) {
-            event = new Exam();                     // daca il declar in if devine local
+            event = new Exam();
             AddEventDetails(event);
             AddExamEventDetails((Exam) event);
         }
@@ -390,22 +398,40 @@ public class Agenda {
         System.out.print("\nDo you want to save changes? Yes/No: ");
         String answer = myScanner.nextLine();
         if(answer.contains("Yes")) {
-            this.events_of_the_categories.get(category).add(event);         // add event to the chosen category
-            if(category.equals("Birthday")){
-                birthdayController.addBirthday((Birthday) event);
+            Event ev = null;
+            boolean empty = true;
+            if(!this.events_of_the_categories.get(category).isEmpty()){
+                empty = false;
             }
-            else{
+            if(category.equals("Birthday")){ // compare content, not reference
+                if(!empty) {
+                    ev = Collections.max(this.events_of_the_categories.get(category), Comparator.comparing(e -> ((Birthday) e).getId()));
+                    ((Birthday) event).setId(((Birthday) ev).getId() + 1);
+                }
+                else
+                    ((Birthday) event).setId(1);
+                //event.setEventId(ev.getEventId() + 1); Here I need max from all categories
+                birthdayController.addBirthday((Birthday) event); // add event to DB
+            }
+            else if(category.equals("Trip")){
+                if(!empty) {
+                    ev = Collections.max(this.events_of_the_categories.get(category), Comparator.comparing(e -> ((Trip) e).getId()));
+                    ((Trip) event).setId(((Trip) ev).getId() + 1);
+                }
+                else
+                    ((Trip) event).setId(1);                //event.setEventId(ev.getEventId() + 1);
                 tripController.addTrip((Trip) event);
             }
+            this.events_of_the_categories.get(category).add(event);         // add event in memory to the chosen category
             System.out.println("Action performed.");
         }else
             System.out.println("Event wasn't added.");
     }
 
-    public void DeleteEvent(){
+    public void DeleteEvent() throws SQLException {
         System.out.println("----------------------------------------------------");
         System.out.println("Available categories:");
-        String category = this.showCategoriesOptions(true);
+        String category = this.showCategoriesOptions(false);
         System.out.println("----------------------------------------------------");
 
         if (category.contains("Empty") || category.contains("Not found")){
@@ -413,56 +439,64 @@ public class Agenda {
             return;
         }
         int element = 0;
-        if(category.equals("All")){
-            for(Enumeration k = this.events_of_the_categories.keys(); k.hasMoreElements();){
-                String key = k.nextElement().toString();
-                this.events_of_the_categories.get(key).clear();
+//        if(category.equals("All")){
+//            for(Enumeration k = this.events_of_the_categories.keys(); k.hasMoreElements();){
+//                String key = k.nextElement().toString();
+//                this.events_of_the_categories.get(key).clear();
+//            }
+//
+//        }else{
+        List<Event> categoriesEvents = this.events_of_the_categories.get(category);
+        if(!categoriesEvents.isEmpty()) {
+            int i = 0;
+            for (Event categoriesEvent : categoriesEvents)
+                System.out.println("Id: " + (++i) + "\n" + categoriesEvent.toString());
+            System.out.println("----------------------------------------------------");
+            System.out.print("Choose an event Id:");
+
+            element = Integer.parseInt(myScanner.nextLine()) - 1;
+            if(this.events_of_the_categories.size() - 1 < element) {
+                System.out.println("Not exist.");
+                return;
             }
-        }else{
-            List<Event> categoriesEvents = this.events_of_the_categories.get(category);
-            if(!categoriesEvents.isEmpty()) {
-                int i = 0;
-                for (Event categoriesEvent : categoriesEvents)
-                    System.out.println("Id: " + (++i) + "\n" + categoriesEvent.toString());
-                System.out.println("----------------------------------------------------");
-                System.out.print("Choose an event Id:");
+            Event event = this.events_of_the_categories.get(category).remove(element);
+            if(category.equals("Birthday")){ // compare content, not reference
+                birthdayController.deleteBirthday((Birthday)event); // add event to DB
+            }
+            else if(category.equals("Birthday")){
+                tripController.deleteTrip((Trip)event);
+            }
+            System.out.println("Action performed.");
 
-                element = Integer.parseInt(myScanner.nextLine()) - 1;
-                if(this.events_of_the_categories.size() - 1 < element) {
-                    System.out.println("Not exist.");
-                    return;
-                }
-                this.events_of_the_categories.get(category).remove(element);
-            }else
-                System.out.println("List is empty.");
-        }
-
-        ArrayList<String> log = new ArrayList<>();
-        log.add("Action: DeleteEvent");
-        log.add("Category: " + category);
-        if(category.equals("All"))
-            log.add("Event name: All");
-        else
-            log.add("Event name: " + this.events_of_the_categories.get(category).get(element).getName());
-        actionsLogService.addLogToFile(log);
+            ArrayList<String> log = new ArrayList<>();
+            log.add("Action: DeleteEvent");
+            log.add("Category: " + category);
+            if(category.equals("All"))
+                log.add("Event name: All");
+            else
+                log.add("Event name: " + this.events_of_the_categories.get(category).get(element).getName());
+            actionsLogService.addLogToFile(log);
+            logController.addLog(log);
+        }else
+            System.out.println("List is empty.");
     }
 
-    public void AddCategory()
-    {
+    public void AddCategory() throws SQLException {
         System.out.println("----------------------------------------------------");
 
         System.out.print("Enter the name of the new category: ");
         String name = this.myScanner.nextLine();
         this.events_of_the_categories.put(name, new ArrayList<>()); // there is no need to specify the argument for ArrayList
-        categoriesService.addCategoriesToFile(name);
-
+        categoriesService.addCategoriesToFile(name); //Add in CSV file
+        categoriesController.addCategory(name); // Add in DB
         ArrayList<String> log = new ArrayList<>();
         log.add("Action: AddCategory");
         log.add("Category:" + name);
         actionsLogService.addLogToFile(log);
+        logController.addLog(log);
     }
 
-    public void DeleteCategory() {
+    public void DeleteCategory() throws SQLException {
         System.out.println("----------------------------------------------------");
         System.out.println("Your categories. Choose one to delete.");
         String category = this.showCategoriesOptions(false);
@@ -471,12 +505,14 @@ public class Agenda {
             System.out.println("No categories.");
             return;
         }
-        this.events_of_the_categories.remove(category);
-
+        this.events_of_the_categories.remove(category); // delete from in memory dictionary
+        categoriesController.deleteCategory(category); // delete from DB
+        // Add log in logFile
         ArrayList<String> log = new ArrayList<>();
         log.add("Action: DeleteCategory");
         log.add("Category:" + category);
         actionsLogService.addLogToFile(log);
+        logController.addLog(log);
     }
 
 
@@ -512,6 +548,7 @@ public class Agenda {
         log.add("Action: ShowEvents");
         log.add("Category: " + category);
         actionsLogService.addLogToFile(log);
+        logController.addLog(log);
     }
 
     public int ChooseAction(){

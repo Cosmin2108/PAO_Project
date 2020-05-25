@@ -64,8 +64,11 @@ public class DbContext {
         statement.executeUpdate(query);
     }
 
-    public void deleteBirthday(int Id){
-
+    public void deleteBirthday(Birthday event) throws SQLException {
+        String query = "DELETE FROM birthdays WHERE id = " + event.getId();
+        statement.executeUpdate(query); // table has delete cascade, so I think the next 2 lines aren't necessary
+//        query = "DELETE FROM events WHERE birthdayId = " + event.getId();
+//        statement.executeUpdate(query);
     }
 
     public ArrayList<Trip> getTrips() throws SQLException {
@@ -104,8 +107,11 @@ public class DbContext {
         statement.executeUpdate(query);
     }
 
-    public void deleteTrip(int Id){
-
+    public void deleteTrip(Trip event) throws SQLException {
+        String query = "DELETE FROM trips WHERE id = " + event.getId();
+        statement.executeUpdate(query);
+//        query = "DELETE FROM events WHERE tripId = " + event.getId();
+//        statement.executeUpdate(query);
     }
 
     public ArrayList<String> getCategories() throws SQLException {
@@ -116,5 +122,31 @@ public class DbContext {
             categories.add(result.getString("name"));
         }
         return categories;
+    }
+
+    public void addCategories(String category) throws SQLException {
+        String query = "INSERT INTO categories VALUE(null, '" + category + "')";
+        statement.executeUpdate(query);
+    }
+
+    public void deleteCategory(String name) throws SQLException {
+        String query = "DELETE FROM categories WHERE name = '" + name + " ' ";
+        statement.executeUpdate(query);
+    }
+
+    public void addLog(String log) throws SQLException {
+        String query = "INSERT INTO logs VALUE(null, '" + log + "')";
+        statement.executeUpdate(query);
+    }
+
+    public ArrayList<String> getLogs() throws SQLException {
+        ArrayList<String> logs = new ArrayList<>();
+        String query = "SELECT * FROM logs";
+        ResultSet result = statement.executeQuery(query);
+
+        while(result.next()){
+            logs.add(result.getString("info"));
+        }
+        return logs;
     }
 }

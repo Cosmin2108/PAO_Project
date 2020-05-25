@@ -19,12 +19,12 @@ public class TripController {
         return trips;
     }
 
-    public void addTrip(Trip event){
+    public void addTrip(Trip event) throws SQLException {
         context.addTrip(event);
     }
 
-    public void deleteTrip(){
-
+    public void deleteTrip(Trip element) throws SQLException {
+        context.deleteTrip(element);
     }
 
     public void editTrip(){

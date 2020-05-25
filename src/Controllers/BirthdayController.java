@@ -22,8 +22,8 @@ public class BirthdayController {
         context.addBirthday(event);
     }
 
-    public void deleteBirthday(){
-
+    public void deleteBirthday(Birthday element) throws SQLException {
+        context.deleteBirthday(element);
     }
 
     public void editBirthday(){
