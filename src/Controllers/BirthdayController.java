@@ -10,23 +10,23 @@ public class BirthdayController {
 
     private DbContext context = DbContext.getInstance();
 
-    public BirthdayController() throws SQLException {
+    public BirthdayController() {
     }
 
-    public ArrayList<Birthday> getBirthdays() throws SQLException {
+    public ArrayList<Birthday> getBirthdays() {
         ArrayList<Birthday> birthdays = context.getBirthdays();
         return birthdays;
     }
 
-    public void addBirthday(Birthday event) throws SQLException {
+    public void addBirthday(Birthday event) {
         context.addBirthday(event);
     }
 
-    public void deleteBirthday(Birthday element) throws SQLException {
+    public void deleteBirthday(Birthday element) {
         context.deleteBirthday(element);
     }
 
-    public void editBirthday(){
-
+    public void editBirthday(Birthday event){
+        context.editBirthday(event);
     }
 }

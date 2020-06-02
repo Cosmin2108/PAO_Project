@@ -29,7 +29,7 @@ public class Agenda {
     private ActionsLogController logController;
     private Dictionary<String, List<Event>> events_of_the_categories;
 
-    private Agenda() throws SQLException {
+    private Agenda(){
         events_of_the_categories = new Hashtable<>();
 
         myScanner = new Scanner(System.in);
@@ -81,7 +81,7 @@ public class Agenda {
         }
     }
 
-    private void Run() throws SQLException {
+    private void Run(){
         Boolean run = true;
         ArrayList<String> log = new ArrayList<>();
         log.add("Action: Run application Agenda");
@@ -91,10 +91,10 @@ public class Agenda {
             switch (single_instance.ChooseAction()){
                 case 1: single_instance.AddEvent(); break;
                 case 2: single_instance.DeleteEvent(); break;
-                case 3: break; // edit event Not implemented
+                case 3: single_instance.EditEvent(); break; // edit event Not implemented
                 case 4: single_instance.AddCategory(); break;
                 case 5: single_instance.DeleteCategory(); break;
-                case 6: break; // edit category. Not implemented
+                case 6: single_instance.editCategory(); break; // edit category. Not implemented
                 case 7: single_instance.showEvents(); break;
                 case 8: run = false; single_instance = null; break; // close
             }
@@ -102,7 +102,7 @@ public class Agenda {
     }
 
     // static method to create instance of Singleton class
-    public static Agenda getInstance() throws SQLException {
+    public static Agenda getInstance(){
         if (single_instance == null) {
             single_instance = new Agenda();
             single_instance.Run();
@@ -346,7 +346,7 @@ public class Agenda {
         logController.addLog(log);
     }
 
-    public void AddEvent() throws SQLException {
+    public void AddEvent() {
         System.out.println("----------------------------------------------------");
         System.out.println("Available categories:");
         String category = this.showCategoriesOptions(false);
@@ -428,7 +428,56 @@ public class Agenda {
             System.out.println("Event wasn't added.");
     }
 
-    public void DeleteEvent() throws SQLException {
+    public void EditEvent(){
+        System.out.println("----------------------------------------------------");
+        System.out.println("Available categories:");
+        String category = this.showCategoriesOptions(false);
+        System.out.println("----------------------------------------------------");
+
+        if (category.contains("Empty") || category.contains("Not found")){
+            System.out.println("No categories.");
+            return;
+        }
+
+        int element = 0;
+        List<Event> categoriesEvents = this.events_of_the_categories.get(category);
+        if(!categoriesEvents.isEmpty()) {
+            int i = 0;
+            for (Event categoriesEvent : categoriesEvents)
+                System.out.println("Id: " + (++i) + "\n" + categoriesEvent.toString());
+            System.out.println("----------------------------------------------------");
+            System.out.print("Choose an event Id:");
+
+            element = Integer.parseInt(myScanner.nextLine()) - 1;
+            if(this.events_of_the_categories.size() - 1 < element) {
+                System.out.println("Not exist.");
+                return;
+            }
+            Event event = this.events_of_the_categories.get(category).remove(element);
+            if(category.equals("Birthday")){ // compare content, not reference
+                this.AddEventDetails(event);
+                this.AddBirthdayEventDetails((Birthday) event);
+                birthdayController.editBirthday((Birthday)event); // add event to DB
+            }
+            else if(category.equals("Trip")){
+                this.AddEventDetails(event);
+                this.AddTripEventDetails((Trip) event);
+                tripController.editTrip((Trip) event);
+            }
+            this.events_of_the_categories.get(category).add(event); // reintroduce event
+            System.out.println("Action performed.");
+
+            ArrayList<String> log = new ArrayList<>();
+            log.add("Action: EditEvent");
+            log.add("Category: " + category);
+            log.add("Event name: " + this.events_of_the_categories.get(category).get(element).getName());
+            actionsLogService.addLogToFile(log);
+            logController.addLog(log);
+        }else
+            System.out.println("List is empty.");
+    }
+
+    public void DeleteEvent() {
         System.out.println("----------------------------------------------------");
         System.out.println("Available categories:");
         String category = this.showCategoriesOptions(false);
@@ -463,7 +512,7 @@ public class Agenda {
             if(category.equals("Birthday")){ // compare content, not reference
                 birthdayController.deleteBirthday((Birthday)event); // add event to DB
             }
-            else if(category.equals("Birthday")){
+            else if(category.equals("Trip")){
                 tripController.deleteTrip((Trip)event);
             }
             System.out.println("Action performed.");
@@ -481,7 +530,7 @@ public class Agenda {
             System.out.println("List is empty.");
     }
 
-    public void AddCategory() throws SQLException {
+    public void AddCategory() {
         System.out.println("----------------------------------------------------");
 
         System.out.print("Enter the name of the new category: ");
@@ -496,7 +545,7 @@ public class Agenda {
         logController.addLog(log);
     }
 
-    public void DeleteCategory() throws SQLException {
+    public void DeleteCategory() {
         System.out.println("----------------------------------------------------");
         System.out.println("Your categories. Choose one to delete.");
         String category = this.showCategoriesOptions(false);
@@ -515,6 +564,25 @@ public class Agenda {
         logController.addLog(log);
     }
 
+    public void editCategory(){
+        System.out.println("----------------------------------------------------");
+        System.out.println("Your categories. Choose one to delete.");
+        String category = this.showCategoriesOptions(false);
+
+        if (category.contains("Empty") || category.contains("Not found")){
+            System.out.println("No categories.");
+            return;
+        }
+        System.out.println("----------------------------------------------------");
+
+        System.out.print("Reenter name of the category: ");
+        String newName = this.myScanner.nextLine();
+
+        List<Event> events = this.events_of_the_categories.get(category);
+        this.events_of_the_categories.remove(category);
+        this.events_of_the_categories.put(newName, events);
+        categoriesController.editCategory(category, newName);
+    }
 
     public void showEvents()
     {

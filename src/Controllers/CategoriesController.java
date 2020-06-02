@@ -9,23 +9,23 @@ import java.util.ArrayList;
 public class CategoriesController {
     private DbContext context = DbContext.getInstance();
 
-    public CategoriesController() throws SQLException {
+    public CategoriesController() {
     }
 
-    public ArrayList<String> getCategories() throws SQLException {
+    public ArrayList<String> getCategories() {
         ArrayList<String> categories = context.getCategories();
         return categories;
     }
 
-    public void addCategory(String name) throws SQLException {
+    public void addCategory(String name) {
         context.addCategories(name);
     }
 
-    public void deleteCategory(String name) throws SQLException {
+    public void deleteCategory(String name) {
         context.deleteCategory(name);
     }
 
-    public void editCategory(){
-
+    public void editCategory(String category, String newName) {
+        context.editCategory(category, newName);
     }
 }

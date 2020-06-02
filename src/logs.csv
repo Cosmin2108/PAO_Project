@@ -39,3 +39,14 @@ Logged at: 19:39:41, Action: Run application Agenda
 Logged at: 19:40:23, Action: AddEvent, Category: Trip, Days: 4, Transport: 132.0, Hotel: 345.0, Extra budged345.0, Attractions: Padure;lac, When: 2020-08-21, Where: Bucegi, Time: 11:00, Event name: Excursiee
 Logged at: 19:40:34, Action: ShowEvents, Category: Birthday
 Logged at: 19:40:38, Action: ShowEvents, Category: Trip
+Logged at: 12:55:54, Action: Run application Agenda
+Logged at: 12:57:52, Action: Run application Agenda
+Logged at: 13:09:57, Action: Run application Agenda
+Logged at: 13:10:27, Action: ShowEvents, Category: Exam
+Logged at: 13:11:39, Action: ShowEvents, Category: All
+Logged at: 13:12:05, Action: ShowEvents, Category: All
+Logged at: 13:12:37, Action: ShowEvents, Category: Trip
+Logged at: 13:14:52, Action: Run application Agenda
+Logged at: 13:20:30, Action: Run application Agenda
+Logged at: 13:21:58, Action: AddEvent, Category: Trip, Days: 23, Transport: 2332.0, Hotel: 2232.0, Extra budged2232.0, Attractions: dd;ss, When: 2020-09-21, Where: ddd, Time: 12:30, Event name: ddd
+Logged at: 13:22:13, Action: ShowEvents, Category: Trip

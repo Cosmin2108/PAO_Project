@@ -4,7 +4,7 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 public final class Aplicatie {
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) {
         Scanner myScanner = new Scanner(System.in);
         Boolean powerOn = true;
         while(powerOn) {
