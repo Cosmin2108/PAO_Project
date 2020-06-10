@@ -50,3 +50,21 @@ Logged at: 13:14:52, Action: Run application Agenda
 Logged at: 13:20:30, Action: Run application Agenda
 Logged at: 13:21:58, Action: AddEvent, Category: Trip, Days: 23, Transport: 2332.0, Hotel: 2232.0, Extra budged2232.0, Attractions: dd;ss, When: 2020-09-21, Where: ddd, Time: 12:30, Event name: ddd
 Logged at: 13:22:13, Action: ShowEvents, Category: Trip
+Logged at: 19:06:14, Action: Run application Agenda
+Logged at: 19:06:58, Action: ShowEvents, Category: All
+Logged at: 19:08:19, Action: AddEvent, Category: Trip, Days: 4, Transport: 234.0, Hotel: 2343.0, Extra budged2343.0, Attractions: Una;doua, When: 2020-08-21, Where: Munte, Time: 21:00, Event name: Excursie
+Logged at: 19:08:19, Action: EditEvent, Category: Trip, Event name: Excursie
+Logged at: 19:08:28, Action: ShowEvents, Category: Trip
+Logged at: 19:14:55, Action: AddEvent, Category: Trip, Days: 2, Transport: 234.0, Hotel: 123.0, Extra budged123.0, Attractions: Munte;Lac, When: 2020-09-21, Where: Munte, Time: 22:00, Event name: Plimbare
+Logged at: 19:14:55, Action: EditEvent, Category: Trip, Event name: Excursie
+Logged at: 19:18:32, Action: Run application Agenda
+Logged at: 19:19:31, Action: AddEvent, Category: Trip, Days: 2, Transport: 12.0, Hotel: 1212.0, Extra budged1212.0, Attractions: da;da, When: 1999-08-21, Where: Munte, Time: 21:00, Event name: Plimbare
+Logged at: 19:19:31, Action: EditEvent, Category: Trip, Event name: ddd
+Logged at: 19:31:44, Action: Run application Agenda
+Logged at: 19:32:56, Action: AddEvent, Category: Trip, Days: 23, Transport: 222.0, Hotel: 123.0, Extra budged123.0, Attractions: Munte;Apa;Pesteri, When: 1999-09-21, Where: Munte, Time: 12:00, Event name: PLimbare
+Logged at: 19:32:56, Action: EditEvent, Category: Trip, Event name: ddd
+Logged at: 19:34:57, Action: AddEvent, Category: Trip, Days: 4, Transport: 12.0, Hotel: 0.0, Extra budged0.0, Attractions: Gradina;Padure, When: 2021-04-22, Where: Bunici, Time: 12:00, Event name: Excursie la tara
+Logged at: 19:34:58, Action: EditEvent, Category: Trip, Event name: PLimbare
+Logged at: 19:35:41, Action: ShowEvents, Category: Trip
+Logged at: 19:36:24, Action: AddEvent, Category: Birthday, Whose: eu, Gift: vedem, Event name: Ziua mea, When: +20202-08-21, Where: Acasa, Time: 12:00
+Logged at: 19:37:26, Action: AddCategory, Category:Concert

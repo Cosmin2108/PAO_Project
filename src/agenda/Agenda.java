@@ -44,6 +44,7 @@ public class Agenda {
         tripController = new TripController();
         logController = new ActionsLogController();
 
+        // CSV
 //        // categories
 //        ArrayList<String> categoriesList = categoriesService.getCategoriesFromFile();
 //        for(String categories:categoriesList){
@@ -63,6 +64,7 @@ public class Agenda {
 //            events_of_the_categories.get("Birthday").add(t);
 //        }
 
+        // BD
         // categories
         ArrayList<String> categoriesList = categoriesController.getCategories();
         for(String categories:categoriesList){
@@ -91,10 +93,10 @@ public class Agenda {
             switch (single_instance.ChooseAction()){
                 case 1: single_instance.AddEvent(); break;
                 case 2: single_instance.DeleteEvent(); break;
-                case 3: single_instance.EditEvent(); break; // edit event Not implemented
+                case 3: single_instance.EditEvent(); break;
                 case 4: single_instance.AddCategory(); break;
                 case 5: single_instance.DeleteCategory(); break;
-                case 6: single_instance.editCategory(); break; // edit category. Not implemented
+                case 6: single_instance.editCategory(); break;
                 case 7: single_instance.showEvents(); break;
                 case 8: run = false; single_instance = null; break; // close
             }
